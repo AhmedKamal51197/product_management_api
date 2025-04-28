@@ -46,5 +46,28 @@ class ProductController extends Controller
             return $this->failure($e->getMessage(), 500);
         }
     }
+
+    public function destroy(Product $product)
+    {
+        try{
+            $product->delete();
+            return $this->success(message:'Product deleted successfully', status:200);
+        }catch(\Throwable $e){
+            return $this->failure($e->getMessage(), 500);
+        }
+    }
+    // restore deleted product
+
+    public function restore($id)
+    {
+        try{
+            $product = Product::withTrashed()->findOrFail($id);
+            $product->restore();
+            return $this->success(data:new ProductResource($product),message:'Product restored successfully', status:200);
+        }catch(\Throwable $e){
+            return $this->failure($e->getMessage(), 500);
+        }
+    }
+    
     
 }
