@@ -30,6 +30,7 @@ class ProductController extends Controller
     public function update(Product $product,UpdateProductRequest $request)
     {
         try{
+           
             $data = $request->validated();
             if ($request->hasFile('image')) {
                 // Delete the old image if it exists
@@ -78,10 +79,15 @@ class ProductController extends Controller
     public function show (Product $product)
     {
         try{
+            if ($product->status == 0) {
+                return $this->failure('This product is not available for show casue it\'s status = false', 400);
+            }
             return $this->success(data:new ProductResource($product),message:'Product retrieved successfully', status:200);
         }catch(\Throwable $e){
             return $this->failure($e->getMessage(), 500);
         }
     }
+
+    
     
 }
