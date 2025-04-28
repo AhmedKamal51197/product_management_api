@@ -34,7 +34,8 @@ class ProductController extends Controller
             if ($request->hasFile('image')) {
                 // Delete the old image if it exists
                 if ($product->image) {
-                    deleteImage($product->image, 'Products');
+                 
+                    deleteImage($product->image, 'product');
                 }
                 $data['image'] = uploadImage($request->file('image'), 'Products');
             }
@@ -83,5 +84,7 @@ class ProductController extends Controller
             return $this->failure($e->getMessage(), 500);
         }
     }
+
+    
     
 }

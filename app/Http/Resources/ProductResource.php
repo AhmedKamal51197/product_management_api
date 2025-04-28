@@ -21,7 +21,7 @@ class ProductResource extends JsonResource
             'description'=>$this->description,
             'price'=>$this->price,
             'quatnity'=>$this->quatnity,
-            'image'=>$this->image,
+            'image'=>getImagePathFromDirectory($this->image,'Products'),
             'status'=>$this->status,
             'created_at'=>$this->created_at,
             'updated_at'=>$this->updated_at,

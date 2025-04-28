@@ -23,9 +23,7 @@ class Product extends Model
         'updated_at' => 'datetime',
         'status' => 'boolean',
     ];
-    public function getImageAttribute()
-    {   
-        
-        return getImagePathFromDirectory($this->attributes['image'],'Products');
-    }
+    protected $hidden = [
+        'deleted_at',
+    ];
 }

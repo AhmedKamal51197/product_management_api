@@ -23,7 +23,7 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>[ 'string', 'max:255',new NotNumbersOnly()],
+            'name'=>[ 'string', 'max:255',new NotNumbersOnly(),'unique:products,name,'.$this->product->id],
             'description'=>[ 'string', 'max:255',new NotNumbersOnly()],
             'price'=>[ 'numeric', 'min:0'],
             'quatnity'=>[ 'integer', 'min:0'],
