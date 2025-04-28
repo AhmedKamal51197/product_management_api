@@ -19,9 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::prefix('v1')->group(function () {
+    Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::patch('products/{product}/status', [ProductController::class, 'changeStatus'])->name('products.updateStatus');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');
-    Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::post('products/{product}/restore', [ProductController::class, 'restore'])->name('products.restore');
     Route::get('products/{product}', [ProductController::class, 'show'])

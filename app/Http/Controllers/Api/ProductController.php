@@ -30,8 +30,8 @@ class ProductController extends Controller
 
     public function update(Product $product,UpdateProductRequest $request)
     {
+        
         try{
-           
             $data = $request->validated();
             if ($request->hasFile('image')) {
                 // Delete the old image if it exists
@@ -93,7 +93,7 @@ class ProductController extends Controller
     public function changeStatus(Product $product)
     {
         try {
-           
+        
             $newStatus = $product->status == "active" ? "inactive" : "active";
             $product->update(['status' => $newStatus]);
             return $this->success(data: new ProductResource($product), message: 'Product status updated successfully', status: 200);

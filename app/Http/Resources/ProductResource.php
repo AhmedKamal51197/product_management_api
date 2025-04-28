@@ -16,11 +16,12 @@ class ProductResource extends JsonResource
     {
         
         return [
+
             'id'=>$this->id,
             'name'=>$this->name,
             'description'=>$this->description,
             'price'=>$this->price,
-            'quatnity'=>$this->quatnity,
+            'quantity'=>$this->quantity,
             'image'=>getImagePathFromDirectory($this->image,'Products'),
             'status'=>$this->status,
             'created_at'=>$this->created_at,

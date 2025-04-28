@@ -26,7 +26,7 @@ class StoreProductRequest extends FormRequest
             'name'=>['required', 'string', 'max:255',new NotNumbersOnly(),'unique:products,name'],
             'description'=>['required', 'string', 'max:255',new NotNumbersOnly()],
             'price'=>['required', 'numeric', 'min:0'],
-            'quatnity'=>['required', 'integer', 'min:0'],
+            'quantity'=>['required', 'integer', 'min:0'],
             'image'=>['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'status'=>['required', 'boolean'],
 
