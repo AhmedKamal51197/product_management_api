@@ -75,5 +75,13 @@ class ProductController extends Controller
         }
     }
     
+    public function show (Product $product)
+    {
+        try{
+            return $this->success(data:new ProductResource($product),message:'Product retrieved successfully', status:200);
+        }catch(\Throwable $e){
+            return $this->failure($e->getMessage(), 500);
+        }
+    }
     
 }
