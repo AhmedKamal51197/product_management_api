@@ -26,4 +26,12 @@ class Product extends Model
     protected $hidden = [
         'deleted_at',
     ];
+    public function setStatusAttribute($value)
+    {
+        $this->attributes['status'] = ($value =='active') ? 1 : 0;
+    }
+    public function getStatusAttribute()
+    {
+        return $this->attributes['status'] == 1 ? 'active' : 'inactive';
+    }
 }

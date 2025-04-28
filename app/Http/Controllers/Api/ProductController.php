@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Requests\UpdateStatusRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -88,7 +89,71 @@ class ProductController extends Controller
             return $this->failure($e->getMessage(), 500);
         }
     }
+    // Change the status of a product (PATCH /api/products/{id}/status) between active and  inactive. 
+    public function changeStatus(Product $product)
+    {
+        try {
+           
+            $newStatus = $product->status == "active" ? "inactive" : "active";
+            $product->update(['status' => $newStatus]);
+            return $this->success(data: new ProductResource($product), message: 'Product status updated successfully', status: 200);
+        } catch (\Throwable $e) {
+            // Return failure response with error message
+            return $this->failure($e->getMessage(), 500);
+        }
+    }
+    
+    // filter products
+    public function productFilter()
+    {
+       
+        
+        try {
+      
+            $name = $this->getArrayFromRequest(request('name'));
+           
+            $status = $this->getArrayFromRequest(request('status'));
+            $minPrice = request('min_price');
+            $maxPrice = request('max_price');
+            $orderDirection = request('sort', 'desc'); 
+            $query = Product::query();
+            
+            $query->when(!empty($name), fn($q) => $this->filterInArray($q, 'name', $name));
+            $query->when(!empty($status), fn($q) => $this->filterInArray($q, 'status', $status));
+            if (isset($minPrice) && isset($maxPrice)) {
+                $query->whereRaw('price BETWEEN ? AND ?', [$minPrice, $maxPrice]);
+            } elseif (isset($minPrice)) {
+                $query->whereRaw('price >= ?', [$minPrice]);
+            } elseif (isset($maxPrice)) {
+                $query->whereRaw('price <= ?', [$maxPrice]);
+            }
+            $query->orderBy('price','asc')->orderBy('created_at', $orderDirection);
 
+            $perPage = 10;
+            $products = $query->paginate($perPage);
+            
+            $data = ProductResource::collection($products);
+            if($data->isEmpty()){
+                return $this->success(data:[],message: 'No products found', status: 200);
+            }
+            return $this->successWithPagination(data:$data,message: "products per page" );
+
+     } catch (\Exception $e) {
+            return $this->failure(message: $e->getMessage());
+        }
+
+    }
+    private function getArrayFromRequest($param): array
+    {
+        return is_array($param) ? $param : (isset($param) ? explode(',', $param) : []);
+    }
+    private function filterInArray($query, $column, $values)
+    {   
+        
+        if(!is_array($values)) return $query->Where($column,$values);
+        else return $query->WhereIn($column, $values);
+    }
+ 
     
     
 }
