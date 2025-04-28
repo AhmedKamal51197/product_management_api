@@ -42,4 +42,6 @@ if(!function_exists('getImagePathFromDirectory')){
 
 }
 
+
+
 ?>
