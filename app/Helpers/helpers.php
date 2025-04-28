@@ -32,6 +32,7 @@ if(!function_exists('getImagePathFromDirectory')){
     {
       
         $imagePath = public_path('/storage/Images'.'/' . $directory . '/' . $imageName);
+        
         if ( $imageName && $directory && file_exists( $imagePath ) ) // check if the directory is null or the image doesn't exist
             return asset('/storage/Images') .'/' . $directory . '/' . $imageName;
         else

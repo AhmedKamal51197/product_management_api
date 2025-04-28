@@ -24,7 +24,8 @@ class Product extends Model
         'status' => 'boolean',
     ];
     public function getImageAttribute()
-    {
+    {   
+        
         return getImagePathFromDirectory($this->attributes['image'],'Products');
     }
 }
