@@ -62,7 +62,13 @@ class ProductController extends Controller
     {
         try{
             $product = Product::withTrashed()->findOrFail($id);
-            $product->restore();
+             // Check if the product is already restored
+            if (!$product->trashed()) {
+            
+                return $this->success(message: 'Product has already been restored.',status: 200);
+            }
+                $product->restore();
+
             return $this->success(data:new ProductResource($product),message:'Product restored successfully', status:200);
         }catch(\Throwable $e){
             return $this->failure($e->getMessage(), 500);
